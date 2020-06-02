@@ -1,0 +1,39 @@
+import matplotlib.pyplot as plt
+import numpy as np 
+import STOM_higgs_tools as sht
+
+
+def upc(xVals):
+    vals= xVals.tolist()
+    for v in vals:
+        if v< 140:
+           vals.remove(v) 
+    final = np.asarray(vals)
+    return final
+
+def findA(lamb, bin_edges, bin_heights):
+    count =0
+    dArea=0
+    for b in bin_heights:
+        dArea+=b*(bin_edges[count+1]-bin_edges[count]
+        count+=1
+    return dArea/lamb    
+
+
+def maxL(xVals):
+    sum=0 
+    for x in xVals:
+        sum+=x
+    maxL= sum/len(xVals) #didnt actually do any maths so this is a stand in
+    return maxL    
+    
+  
+
+vals = sht.generate_data()
+vals=upc(vals)
+lamb=maxL(vals)
+bin_heights, bin_edges, patches = plt.hist(vals, range = [0.0, 1.0], bins = 10)
+a= findA(lamb,bin_edges, bin_heights )
+expectation= sht.get_B_expectation(bin_edges, a, lamb)
+plt.plot(bin_edges, expectation)
+plt.show()
